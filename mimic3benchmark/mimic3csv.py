@@ -129,8 +129,8 @@ def break_up_stays_by_subject(stays, output_path, subjects=None):
     nb_subjects = subjects.shape[0]
     for subject_id in tqdm(subjects, total=nb_subjects, desc='Breaking up stays by subjects'):
         dn = os.path.join(output_path, str(subject_id))
-        if subject_id ==85374:
-            continue
+        # if subject_id ==85374:
+        #     continue
         try:
             os.makedirs(dn)
         except:
