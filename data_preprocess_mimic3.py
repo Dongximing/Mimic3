@@ -42,6 +42,6 @@ procedures = read_icd_procedures_table(args.mimic3_path)
 # procedures.to_csv(os.path.join(args.output_path, 'all_procedures.csv'), index=False)#SUBJECT_ID,HADM_ID,ICD9_CODE,LONG_TITLE
 procedures_and_diagnoses = combine_procedures_diagnoses(procedures,diagnoses)
 procedures_and_diagnoses.to_csv(os.path.join(args.output_path, 'all_diagnoses_with_procedures.csv'), index=False)
-print("procedures_and_diagnoses"+len(procedures_and_diagnoses))
+print("procedures_and_diagnoses",len(procedures_and_diagnoses))
 
 
