@@ -38,6 +38,8 @@ def combine_procedures_diagnoses(procedures,diagnoses):
 # note_event_text = note_events[['SUBJECT_ID', 'HADM_ID', 'TEXT']].to_csv(os.path.join(args.output_path, 'all_note_event.csv'), index=False)#SUBJECT_ID,HADM_ID,TEXT
 diagnoses = read_icd_diagnoses_table(args.mimic3_path)
 procedures = read_icd_procedures_table(args.mimic3_path)
+print("diagnoses",len(diagnoses))
+print("procedures",len(procedures))
 # diagnoses.to_csv(os.path.join(args.output_path, 'all_diagnoses.csv'), index=False)#SUBJECT_ID,HADM_ID,ICD9_CODE,LONG_TITLE
 # procedures.to_csv(os.path.join(args.output_path, 'all_procedures.csv'), index=False)#SUBJECT_ID,HADM_ID,ICD9_CODE,LONG_TITLE
 procedures_and_diagnoses = combine_procedures_diagnoses(procedures,diagnoses)
