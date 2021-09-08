@@ -30,10 +30,18 @@ def read_icd_procedures_table(mimic3_path):
     procedures[['SUBJECT_ID', 'HADM_ID']] = procedures[['SUBJECT_ID', 'HADM_ID']].astype(int)
     return procedures
 
+def combine_procedures_diagnoses(procedures,diagnoses):
+    procedures_and_diagnoses = procedures.merge(diagnoses, how='inner', left_on=['SUBJECT_ID', 'HADM_ID'], right_on=['SUBJECT_ID', 'HADM_ID'])
+    return procedures_and_diagnoses
 
-note_events = dataframe_from_csv(os.path.join(args.mimic3_path, 'NOTEEVENTS.csv'))
-note_event_text = note_events[['SUBJECT_ID', 'HADM_ID', 'TEXT']].to_csv(os.path.join(args.output_path, 'all_note_event.csv'), index=False)
+# note_events = dataframe_from_csv(os.path.join(args.mimic3_path, 'NOTEEVENTS.csv'))
+# note_event_text = note_events[['SUBJECT_ID', 'HADM_ID', 'TEXT']].to_csv(os.path.join(args.output_path, 'all_note_event.csv'), index=False)#SUBJECT_ID,HADM_ID,TEXT
 diagnoses = read_icd_diagnoses_table(args.mimic3_path)
 procedures = read_icd_procedures_table(args.mimic3_path)
-diagnoses.to_csv(os.path.join(args.output_path, 'all_diagnoses.csv'), index=False)
-procedures.to_csv(os.path.join(args.output_path, 'all_procedures.csv'), index=False)
+# diagnoses.to_csv(os.path.join(args.output_path, 'all_diagnoses.csv'), index=False)#SUBJECT_ID,HADM_ID,ICD9_CODE,LONG_TITLE
+# procedures.to_csv(os.path.join(args.output_path, 'all_procedures.csv'), index=False)#SUBJECT_ID,HADM_ID,ICD9_CODE,LONG_TITLE
+procedures_and_diagnoses = combine_procedures_diagnoses(procedures,diagnoses)
+procedures_and_diagnoses.to_csv(os.path.join(args.output_path, 'all_diagnoses_with_procedures.csv'), index=False)
+print("procedures_and_diagnoses"+len(procedures_and_diagnoses))
+
+
