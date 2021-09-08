@@ -18,9 +18,10 @@ def read_icd_diagnoses_table(mimic3_path):
     codes = codes[['ICD9_CODE', 'LONG_TITLE']]
     diagnoses = dataframe_from_csv(os.path.join(mimic3_path, 'DIAGNOSES_ICD.csv'))
     diagnoses = diagnoses[["SUBJECT_ID", "HADM_ID", "ICD9_CODE"]]
+    print("code", len(codes))
     print("diagnoses", len(diagnoses))
     diagnoses = diagnoses.merge(codes, how='inner', left_on='ICD9_CODE', right_on='ICD9_CODE')
-    print("diagnoses", len(diagnoses))
+
     diagnoses[['SUBJECT_ID', 'HADM_ID']] = diagnoses[['SUBJECT_ID', 'HADM_ID']].astype(int)
     return diagnoses
 def read_icd_procedures_table(mimic3_path):
@@ -29,9 +30,11 @@ def read_icd_procedures_table(mimic3_path):
     procedures = dataframe_from_csv(os.path.join(mimic3_path, 'PROCEDURES_ICD.csv'))
 
     procedures = procedures[["SUBJECT_ID","HADM_ID","ICD9_CODE"]]
+    print("code", len(codes))
     print("procedures", len(procedures))
+
     procedures = procedures.merge(codes, how='inner', left_on='ICD9_CODE', right_on='ICD9_CODE')
-    print("procedures", len(procedures))
+
     procedures[['SUBJECT_ID', 'HADM_ID']] = procedures[['SUBJECT_ID', 'HADM_ID']].astype(int)
     return procedures
 
