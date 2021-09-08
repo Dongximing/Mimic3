@@ -8,8 +8,8 @@ import argparse
 from mimic3benchmark.util import dataframe_from_csv
 
 parser = argparse.ArgumentParser(description='Extract per-subject data from MIMIC-III CSV files.')
-parser.add_argument('mimic3_path', type=str, help='Directory containing MIMIC-III CSV files.',default="/home/dongxx/projects/def-mercer/dongxx/mimiciii/1.4")
-parser.add_argument('output_path', type=str, help='Directory where per-subject data should be written.',default="/home/dongxx/projects/def-mercer/dongxx/mimiciii/1.4")
+parser.add_argument('mimic3_path', type=str,default="/home/dongxx/projects/def-mercer/dongxx/mimiciii/1.4")
+parser.add_argument('output_path', type=str,default="/home/dongxx/projects/def-mercer/dongxx/mimiciii/1.4")
 args = parser.parse_args()
 
 
