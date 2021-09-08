@@ -12,33 +12,33 @@ from mimic3benchmark.util import dataframe_from_csv
 
 def read_patients_table(mimic3_path):
     pats = dataframe_from_csv(os.path.join(mimic3_path, 'PATIENTS.csv'))
-    pats = pats[['SUBJECT_ID', 'GENDER', 'DOB', 'DOD']]
-    pats.DOB = pd.to_datetime(pats.DOB)
-    pats.DOD = pd.to_datetime(pats.DOD)
+    pats = pats[['SUBJECT_ID', 'GENDER', 'DOB', 'DOD']]# choose specific columns
+    pats.DOB = pd.to_datetime(pats.DOB)# unite time
+    pats.DOD = pd.to_datetime(pats.DOD)# unite time
     return pats
 
 
 def read_admissions_table(mimic3_path):
     admits = dataframe_from_csv(os.path.join(mimic3_path, 'ADMISSIONS.csv'))
-    admits = admits[['SUBJECT_ID', 'HADM_ID', 'ADMITTIME', 'DISCHTIME', 'DEATHTIME', 'ETHNICITY', 'DIAGNOSIS']]
-    admits.ADMITTIME = pd.to_datetime(admits.ADMITTIME)
-    admits.DISCHTIME = pd.to_datetime(admits.DISCHTIME)
-    admits.DEATHTIME = pd.to_datetime(admits.DEATHTIME)
+    admits = admits[['SUBJECT_ID', 'HADM_ID', 'ADMITTIME', 'DISCHTIME', 'DEATHTIME', 'ETHNICITY', 'DIAGNOSIS']]# choose specific columns
+    admits.ADMITTIME = pd.to_datetime(admits.ADMITTIME)# unite time
+    admits.DISCHTIME = pd.to_datetime(admits.DISCHTIME)# unite time
+    admits.DEATHTIME = pd.to_datetime(admits.DEATHTIME)# unite time
     return admits
 
 
 def read_icustays_table(mimic3_path):
     stays = dataframe_from_csv(os.path.join(mimic3_path, 'ICUSTAYS.csv'))
-    stays.INTIME = pd.to_datetime(stays.INTIME)
-    stays.OUTTIME = pd.to_datetime(stays.OUTTIME)
+    stays.INTIME = pd.to_datetime(stays.INTIME)# unite time
+    stays.OUTTIME = pd.to_datetime(stays.OUTTIME)# unite time
     return stays
-
+# 规划时间
 
 def read_icd_diagnoses_table(mimic3_path):
     codes = dataframe_from_csv(os.path.join(mimic3_path, 'D_ICD_DIAGNOSES.csv'))
     codes = codes[['ICD9_CODE', 'SHORT_TITLE', 'LONG_TITLE']]
     diagnoses = dataframe_from_csv(os.path.join(mimic3_path, 'DIAGNOSES_ICD.csv'))
-    diagnoses = diagnoses.merge(codes, how='inner', left_on='ICD9_CODE', right_on='ICD9_CODE')
+    diagnoses = diagnoses.merge(codes, how='inner', left_on='ICD9_CODE', right_on='ICD9_CODE') # according to left ICD and right ICD
     diagnoses[['SUBJECT_ID', 'HADM_ID', 'SEQ_NUM']] = diagnoses[['SUBJECT_ID', 'HADM_ID', 'SEQ_NUM']].astype(int)
     return diagnoses
 
@@ -54,7 +54,7 @@ def read_events_table_by_row(mimic3_path, table):
 
 def count_icd_codes(diagnoses, output_path=None):
     codes = diagnoses[['ICD9_CODE', 'SHORT_TITLE', 'LONG_TITLE']].drop_duplicates().set_index('ICD9_CODE')
-    codes['COUNT'] = diagnoses.groupby('ICD9_CODE')['ICUSTAY_ID'].count()
+    codes['COUNT'] = diagnoses.groupby('ICD9_CODE')['ICUSTAY_ID'].count()#找出 ICD9的 ICUSTAYID 有几个, 相同的 icd count相同
     codes.COUNT = codes.COUNT.fillna(0).astype(int)
     codes = codes[codes.COUNT > 0]
     if output_path:
@@ -108,9 +108,9 @@ def add_inunit_mortality_to_icustays(stays):
 
 
 def filter_admissions_on_nb_icustays(stays, min_nb_stays=1, max_nb_stays=1):
-    to_keep = stays.groupby('HADM_ID').count()[['ICUSTAY_ID']].reset_index()
-    to_keep = to_keep[(to_keep.ICUSTAY_ID >= min_nb_stays) & (to_keep.ICUSTAY_ID <= max_nb_stays)][['HADM_ID']]
-    stays = stays.merge(to_keep, how='inner', left_on='HADM_ID', right_on='HADM_ID')
+    to_keep = stays.groupby('HADM_ID').count()[['ICUSTAY_ID']].reset_index() # 先按着 hadm——ID 分类 然后数出 icu ID 的count 然后放到 icu_stay 列里
+    to_keep = to_keep[(to_keep.ICUSTAY_ID >= min_nb_stays) & (to_keep.ICUSTAY_ID <= max_nb_stays)][['HADM_ID']]# 只有一次icu经历的
+    stays = stays.merge(to_keep, how='inner', left_on='HADM_ID', right_on='HADM_ID')#合并
     return stays
 
 
