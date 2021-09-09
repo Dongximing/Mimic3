@@ -86,6 +86,7 @@ for text in note_event_text['TEXT']:
 note_event_text['require_text'] = texts
 
 note_event_require_text = note_event_text.dropna(subset=['HADM_ID','require_text'])
+print(note_event_require_text[:1])
 note_event_require_text = note_event_require_text[['SUBJECT_ID', 'HADM_ID','require_text']]#
 
 note_event_require_text = note_event_require_text[['SUBJECT_ID', 'HADM_ID', 'require_text']].to_csv(os.path.join(args.output_path, 'all_require_text_event.csv'), index=False)#SUBJECT_ID,HADM_ID,TEXT
