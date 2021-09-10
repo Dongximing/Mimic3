@@ -85,7 +85,7 @@ for text in note_event_text['TEXT']:
 
 note_event_text['require_text'] = texts
 note_event_text = note_event_text['require_text'].replace(r'^\s*$', np.nan, regex=True, inplace = True)
-print(note_event_text.isna().sum())
+# print(note_event_text.isna().sum())
 note_event_require_text = note_event_text.dropna(subset=['HADM_ID','require_text'])
 print(note_event_require_text[:1])
 note_event_require_text = note_event_require_text[['SUBJECT_ID', 'HADM_ID','require_text']]#
