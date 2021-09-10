@@ -84,7 +84,7 @@ for text in note_event_text['TEXT']:
     split_log_line(text)
 
 note_event_text['Require_text'] = texts
-note_event_require_text = note_event_text['require_text'].replace(r'^\s*$', np.NaN, regex=True, inplace = True)
+note_event_require_text = note_event_text['Require_text'].replace(r'^\s*$', np.NaN, regex=True, inplace = True)
 print(note_event_require_text.isna().sum())
 note_event_require_text = note_event_text.dropna(subset=['HADM_ID','Require_text'])
 print(note_event_require_text[:1])
