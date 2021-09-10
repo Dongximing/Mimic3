@@ -87,10 +87,11 @@ note_event_text['Require_text'] = texts
 note_event_text['Require_text'] = note_event_text['Require_text'] .replace(r'^\s*$', np.NaN, regex=True)
 print(note_event_text.isna().sum())
 note_event_require_text =note_event_text.dropna(subset=['HADM_ID','Require_text']).reset_index()
-print(note_event_require_text[:1])
+
+print(note_event_require_text[:5])
 note_event_require_text = note_event_require_text[['SUBJECT_ID', 'HADM_ID','Require_text']]#
 
 note_event_require_text = note_event_require_text[['SUBJECT_ID', 'HADM_ID', 'Require_text']].to_csv(os.path.join(args.output_path, 'all_require_text_event.csv'), index=False)#SUBJECT_ID,HADM_ID,TEXT
-
+print("len",len(note_event_require_text))
 
 
