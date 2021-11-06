@@ -15,7 +15,8 @@ val_ids = load_list_from_txt(f'{DATA_DIR}dev_full_hadm_ids.csv')
 test_ids = load_list_from_txt(f'{DATA_DIR}test_full_hadm_ids.csv')
 train_ids = load_list_from_txt(f'{DATA_DIR}train_full_hadm_ids.csv')
 hadm_ids = [train_ids, val_ids, test_ids]
-full_train,full_val,full_test = [df[df['HADM_ID'].isin(ids)]for ids in hadm_ids]
+print(hadm_ids)
+full_train,full_val,full_test = [df[df['HADM_ID'].isin(ids)] for ids in hadm_ids]
 print(len(full_train))
 print(len(full_val))
 print(len(full_test))
