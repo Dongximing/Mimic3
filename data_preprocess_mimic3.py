@@ -16,8 +16,11 @@ test_ids = load_list_from_txt(f'{DATA_DIR}test_full_hadm_ids.csv')
 train_ids = load_list_from_txt(f'{DATA_DIR}train_full_hadm_ids.csv')
 hadm_ids = [train_ids, val_ids, test_ids]
 full_train,full_val,full_test = [df[df['HADM_ID'].isin(ids)]for ids in hadm_ids]
+print(len(full_train))
+print(len(full_val))
+print(len(full_test))
 
-print(train_ids)
+# print(train_ids)
 # parser = argparse.ArgumentParser(description='Extract per-subject data from MIMIC-III CSV files.')
 # parser.add_argument('--mimic3_path', type=str,default="/home/dongxx/projects/def-mercer/dongxx/mimiciii/1.4")
 # parser.add_argument('--output_path', type=str,default="/home/dongxx/projects/def-mercer/dongxx/mimiciii/1.4")
