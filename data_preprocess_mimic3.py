@@ -9,7 +9,7 @@ from mimic3benchmark.util import dataframe_from_csv
 def load_list_from_txt(filepath):
     with open(filepath, 'r') as f:
         return f.read().split()
-DATA_DIR = '/home/dongxx/projects/def-mercer/dongxx/caml-mimic/mimicdata/mimic3'
+DATA_DIR = '/home/dongxx/projects/def-mercer/dongxx/caml-mimic/mimicdata/mimic3/'
 train_ids = load_list_from_txt(f'{DATA_DIR}train_full_hadm_ids.csv')
 
 print(train_ids)
