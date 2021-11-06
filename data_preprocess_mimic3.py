@@ -9,8 +9,13 @@ from mimic3benchmark.util import dataframe_from_csv
 def load_list_from_txt(filepath):
     with open(filepath, 'r') as f:
         return f.read().split()
+df = pd.read_csv('/home/dongxx/projects/def-mercer/dongxx/mimiciii/final.csv')
 DATA_DIR = '/home/dongxx/projects/def-mercer/dongxx/caml-mimic/mimicdata/mimic3/'
+val_ids = load_list_from_txt(f'{DATA_DIR}dev_full_hadm_ids.csv')
+test_ids = load_list_from_txt(f'{DATA_DIR}test_full_hadm_ids.csv')
 train_ids = load_list_from_txt(f'{DATA_DIR}train_full_hadm_ids.csv')
+hadm_ids = [train_ids, val_ids, test_ids]
+full_train,full_val,full_test = [df[df['HADM_ID'].isin(ids)]for ids in hadm_ids]
 
 print(train_ids)
 # parser = argparse.ArgumentParser(description='Extract per-subject data from MIMIC-III CSV files.')
