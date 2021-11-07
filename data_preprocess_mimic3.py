@@ -1,25 +1,25 @@
-
-import pandas as pd
-import numpy as np
-import os
-import sys
-# note_events
-import argparse
-from mimic3benchmark.util import dataframe_from_csv
-def load_list_from_txt(filepath):
-    with open(filepath, 'r') as f:
-        return f.read().split()
-df = pd.read_csv('/home/dongxx/projects/def-mercer/dongxx/mimiciii/final.csv')
-DATA_DIR = '/home/dongxx/projects/def-mercer/dongxx/caml-mimic/mimicdata/mimic3/'
-val_ids = load_list_from_txt(f'{DATA_DIR}dev_full_hadm_ids.csv')
-test_ids = load_list_from_txt(f'{DATA_DIR}test_full_hadm_ids.csv')
-train_ids = load_list_from_txt(f'{DATA_DIR}train_full_hadm_ids.csv')
-hadm_ids = [train_ids, val_ids, test_ids]
-print(hadm_ids)
-full_train,full_val,full_test = [df[df['HADM_ID'].isin(ids)] for ids in hadm_ids]
-print(len(full_train))
-print(len(full_val))
-print(len(full_test))
+#
+# import pandas as pd
+# import numpy as np
+# import os
+# import sys
+# # note_events
+# import argparse
+# from mimic3benchmark.util import dataframe_from_csv
+# def load_list_from_txt(filepath):
+#     with open(filepath, 'r') as f:
+#         return f.read().split()
+# df = pd.read_csv('/home/dongxx/projects/def-mercer/dongxx/mimiciii/final.csv')
+# DATA_DIR = '/home/dongxx/projects/def-mercer/dongxx/caml-mimic/mimicdata/mimic3/'
+# val_ids = load_list_from_txt(f'{DATA_DIR}dev_full_hadm_ids.csv')
+# test_ids = load_list_from_txt(f'{DATA_DIR}test_full_hadm_ids.csv')
+# train_ids = load_list_from_txt(f'{DATA_DIR}train_full_hadm_ids.csv')
+# hadm_ids = [train_ids, val_ids, test_ids]
+# print(hadm_ids)
+# full_train,full_val,full_test = [df[df['HADM_ID'].isin(ids)] for ids in hadm_ids]
+# print(len(full_train))
+# print(len(full_val))
+# print(len(full_test))
 
 # print(train_ids)
 # parser = argparse.ArgumentParser(description='Extract per-subject data from MIMIC-III CSV files.')
@@ -107,5 +107,43 @@ print(len(full_test))
 # note_event_require_text = note_event_require_text[['SUBJECT_ID', 'HADM_ID','Require_text']]#
 # print("len",len(note_event_require_text))
 # note_event_require_text = note_event_require_text[['SUBJECT_ID', 'HADM_ID', 'Require_text']].to_csv(os.path.join(args.output_path, 'all_require_text_event.csv'), index=False)#SUBJECT_ID,HADM_ID,TEXT
+import pandas as pd
+import numpy as np
+import os
+from tqdm import tqdm
+final = pd.read_csv(os.path.join('/home/dongxx/projects/def-mercer/dongxx/mimiciii/final.csv'))
 
+for i in range(len(final)):
 
+    if isinstance(final['D_ICD9_CODE'][i],float):
+        continue
+    final['D_ICD9_CODE'][i] =final['D_ICD9_CODE'][i].replace("'", "").replace('\n', '')
+    final['D_ICD9_CODE'][i]= final['D_ICD9_CODE'][i].lstrip("[").rstrip("]")
+    final['D_ICD9_CODE'][i] = list(final['D_ICD9_CODE'][i].split(" "))
+for i in range(len(final)):
+
+    # print(type(final['ICD9_CODE'][i]))
+    if isinstance(final['ICD9_CODE'][i],list):
+        continue
+    if isinstance(final['ICD9_CODE'][i],float):
+        continue
+    final['ICD9_CODE'][i] =final['ICD9_CODE'][i].replace("'", "").replace('\n', '')
+    final['ICD9_CODE'][i]= final['ICD9_CODE'][i].lstrip("[").rstrip("]")
+    final['ICD9_CODE'][i] = list(final['ICD9_CODE'][i].split(" "))
+print(final.ICD9_CODE.explode().nunique())
+print(final.D_ICD9_CODE.explode().nunique())
+val_texts = []
+p_val_labels = []
+d_val_labels = []
+val_text = final.TEXT
+p_val_label = final.ICD9_CODE
+d_val_label = final.D_ICD9_CODE
+for i,(text,p_label,d_label) in enumerate(zip(val_text,p_val_label,d_val_label)):
+    if i <= 1:
+        val_texts.append(text)
+        p_val_labels.append(p_label)
+        d_val_labels.append(d_label)
+    else:
+        break
+print(type(val_texts[0]))
+print(type(p_val_labels[0]))
