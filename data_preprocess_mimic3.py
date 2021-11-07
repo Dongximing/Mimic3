@@ -146,4 +146,4 @@ for i,(text,p_label,d_label) in enumerate(zip(val_text,p_val_label,d_val_label))
     else:
         break
 print(type(val_texts[0]))
-print(type(p_val_labels[0]))
+print(type(p_val_labels[1]))
