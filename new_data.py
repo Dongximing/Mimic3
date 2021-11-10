@@ -122,8 +122,9 @@ def yield_tokens(data_iter):
     for _, _, text in data_iter:
         yield tokenizer(text)
 
-iterator = _create_data_from_csv(file_name)
+
 vocab = build_vocab_from_iterator(yield_tokens(dataset))
+iterator = _create_data_from_csv(file_name)
 dataset = _RawTextIterableDataset(DATASET_NAME, NUM_LINES, iterator)
 
 
